@@ -22,5 +22,14 @@ namespace Hsp.PsOsc.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SongLibraryFolder {
+            get {
+                return ((string)(this["SongLibraryFolder"]));
+            }
+        }
     }
 }
