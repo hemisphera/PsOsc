@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 namespace WpfApp1
 {
@@ -8,7 +9,7 @@ namespace WpfApp1
   internal class MarkerHandler : MessageHandlerBase
   {
 
-    public MarkerHandler() : base("^/marker/(?<id>[0-9]+)/(?<property>.*?)$")
+    public MarkerHandler() : base("^/marker/(?<index>[0-9]+)/(?<property>.*?)$")
     {
     }
 
@@ -16,7 +17,7 @@ namespace WpfApp1
     {
       var songs = MainVm.Instance.Songs;
 
-      var songIndex = int.Parse(pathArguments["id"]);
+      var songIndex = int.Parse(pathArguments["index"]);
       var song = songs.FirstOrDefault(m => m.Index == songIndex);
       if (song == null)
       {
@@ -26,6 +27,7 @@ namespace WpfApp1
         };
         songs.Add(song);
       }
+
 
       if (pathArguments["property"] == "name")
         song.Name = (string) values[0];
@@ -37,12 +39,11 @@ namespace WpfApp1
         if (!String.IsNullOrEmpty(numberStr))
           song.Id = int.Parse(numberStr);
         else
-        {
-          song.Name = "";
-          song.StartTime = 0;
-          song.Id = 0;
-        }
+          song.Id = null;
       }
+
+      song.Recalculate();
+
     }
 
   }

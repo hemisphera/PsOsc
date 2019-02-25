@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using eos.Mvvm.Core;
@@ -21,6 +22,11 @@ namespace WpfApp1
     private static readonly object SyncRoot = new object();
 
 
+    public string DawIpAddress
+    {
+      get => GetAutoFieldValue<string>();
+      set => SetAutoFieldValue(value);
+    }
 
 
     private OscReceiver Receiver { get; }
@@ -72,11 +78,20 @@ namespace WpfApp1
       ExecuteAction = parameter => { Sender.Send(new OscMessage("/pause")); }
     });
 
+    public UiCommand ReconnectCommand => GetAutoFieldValue(new UiCommand
+    {
+      Title = "Reconnect",
+      ExecuteFunction = async paramter => { await Reconnect(); }
+    });
+
+
     public ObservableCollection<SongVm> Songs { get; }
     
 
     private MainVm()
     {
+      DawIpAddress = $"{Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(a => a.AddressFamily == AddressFamily.InterNetwork)}";
+
       UiSettings.Mediator = new Mediator();
 
       Handlers = new List<MessageHandlerBase>
@@ -92,8 +107,7 @@ namespace WpfApp1
       Receiver = new OscReceiver(IPAddress.Any, 9000);
       Receiver.Connect();
 
-      var ip = Dns.GetHostEntry("10.0.0.50").AddressList.FirstOrDefault();
-      Sender = new OscSender(IPAddress.Parse("10.0.0.50"), 0, 9010);
+      Sender = new OscSender(IPAddress.Parse(DawIpAddress), 0, 9010);
       Sender.Connect();
 
       Task.Run(OscReceiverTaskHandler);
@@ -120,6 +134,11 @@ namespace WpfApp1
           handler.Process(args, message.ToArray());
         }
       }
+    }
+
+    public async Task Reconnect()
+    {
+      await Task.CompletedTask;
     }
 
   }

@@ -18,10 +18,20 @@ namespace WpfApp1
       }
     }
 
-    public int Id
+    public int? Id
     {
-      get => GetAutoFieldValue<int>();
-      set => SetAutoFieldValue(value);
+      get => GetAutoFieldValue<int?>();
+      set
+      {
+        SetAutoFieldValue(value);
+        if (value == null)
+        {
+          Name = null;
+          StartTime = 0;
+          Duration = null;
+          Position = 0;
+        }
+      }
     }
 
     public string Name
@@ -42,16 +52,11 @@ namespace WpfApp1
       private set => SetAutoFieldValue(value);
     }
 
-    public float Duration
+    public float? Duration
     {
-      get
-      {
-        if (NextSong == null) return 0;
-        var duration = NextSong.StartTime - StartTime;
-        return duration < 0 ? 0 : duration;
-      }
+      get => GetAutoFieldValue<float?>();
+      set => SetAutoFieldValue(value);
     }
-
 
     public float Percentage
     {
@@ -59,8 +64,14 @@ namespace WpfApp1
       private set => SetAutoFieldValue(value);
     }
 
-    public SongVm NextSong => MainVm.Instance.Songs.FirstOrDefault(s => s.Index == Index + 1);
 
+    private float? CalcDuration()
+    {
+      if (Id == null) return null;
+      var nextSong = MainVm.Instance.Songs.FirstOrDefault(s => s.Index == Index + 1);
+      if (nextSong?.Id == null) return null;
+      return nextSong.StartTime - StartTime;
+    }
 
     public void UpdateTime()
     {
@@ -68,10 +79,10 @@ namespace WpfApp1
       if (newPosition < 0) newPosition = 0;
       Position = newPosition;
 
-      if (NextSong == null)
+      if (Duration == null)
         Percentage = 0;
       else
-        Percentage = Position / (NextSong.StartTime - StartTime);
+        Percentage = Position / Duration.Value;
     }
 
     public void Stop()
@@ -80,6 +91,12 @@ namespace WpfApp1
       Percentage = 0;
     }
 
+    public void Recalculate()
+    {
+      Duration = CalcDuration();
+      var prevSong = MainVm.Instance.Songs.FirstOrDefault(s => s.Index == Index - 1);
+      prevSong?.Recalculate();
+    }
   }
 
 }

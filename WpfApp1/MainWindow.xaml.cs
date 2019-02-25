@@ -28,8 +28,9 @@ namespace WpfApp1
       DataContext = MainVm.Instance;
     }
 
-    private static string FormatTime(float time)
+    private static string FormatTime(float? ptime)
     {
+      var time = ptime ?? 0;
       if (Math.Abs(time) < 0.001)
         return "";
       var ts = TimeSpan.FromSeconds(time);
@@ -41,7 +42,7 @@ namespace WpfApp1
 
     private void TimeSpanFormatConverter_OnOnConvert(object sender, ConverterEventArgs e)
     {
-      e.Result = FormatTime((float) e.Value);
+      e.Result = FormatTime((float?) e.Value);
     }
 
     private void GridControl_OnCustomUnboundColumnData(object sender, GridColumnDataEventArgs e)
