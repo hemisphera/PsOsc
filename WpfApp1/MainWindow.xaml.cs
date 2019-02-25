@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using DevExpress.Xpf.Grid;
 using eos.Mvvm.Converters;
 
 namespace WpfApp1
@@ -45,14 +44,6 @@ namespace WpfApp1
       e.Result = FormatTime((float?) e.Value);
     }
 
-    private void GridControl_OnCustomUnboundColumnData(object sender, GridColumnDataEventArgs e)
-    {
-      var row = (SongVm) e.Source.GetRowByListIndex(e.ListSourceRowIndex);
-      if (e.Column.FieldName == "_StartTime")
-        e.Value = FormatTime(row.StartTime);
-      if (e.Column.FieldName == "_Offset")
-        e.Value = FormatTime(row.Position);
-    }
   }
 
 }

@@ -20,7 +20,7 @@
       <TextBlock Text="{Binding Path=Time, Converter={StaticResource TimeSpanFormatConverter}}" FontSize="26" 
                  HorizontalAlignment="Center" VerticalAlignment="Center" />
       <Grid>
-        <dxe:ProgressBarEdit Minimum="0" Maximum="1" Value="{Binding Path=CurrentSong.Percentage}" Opacity="0.25" />
+        <ProgressBar Minimum="0" Maximum="1" Value="{Binding Path=CurrentSong.Percentage, Mode=OneWay}" Opacity="0.25" />
         <DockPanel>
           <TextBlock DockPanel.Dock="Bottom" 
                      Text="{Binding Path=CurrentSong.Position, Converter={StaticResource TimeSpanFormatConverter}}"
@@ -43,21 +43,25 @@
       <Button DockPanel.Dock="Right" Content="Stop" Command="{Binding Path=StopCommand}" />
     </UniformGrid>
 
-    <dxg:GridControl ItemsSource="{Binding Path=Songs}" SelectedItem="{Binding Path=SelectedSong}"
-                     CustomUnboundColumnData="GridControl_OnCustomUnboundColumnData" >
-      <dxg:GridControl.Columns>
-        <dxg:GridColumn FieldName="Index" Width="50" />
-        <dxg:GridColumn FieldName="Id" Width="50" />
-        <dxg:GridColumn FieldName="Name" Width="*" />
-        <dxg:GridColumn FieldName="StartTime" Width="80" 
-                        Binding="{Binding Path=StartTime, Converter={StaticResource TimeSpanFormatConverter}}" />
-        <dxg:GridColumn FieldName="Duration" Width="80" 
-                        Binding="{Binding Path=Duration, Converter={StaticResource TimeSpanFormatConverter}}" />
-      </dxg:GridControl.Columns>
-      <dxg:GridControl.View>
-        <dxg:TableView NavigationStyle="Row" AllowEditing="False" ShowGroupPanel="False" />
-      </dxg:GridControl.View>
-    </dxg:GridControl>
+    <ListView ItemsSource="{Binding Path=Songs}" SelectedItem="{Binding Path=SelectedSong}" 
+              HorizontalContentAlignment="Stretch">
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="80" />
+              <ColumnDefinition Width="80" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding Path=Name}" Grid.Column="0" />
+            <TextBlock Text="{Binding Path=StartTime, Converter={StaticResource TimeSpanFormatConverter}}" Grid.Column="1" />
+            <TextBlock Text="{Binding Path=Duration, Converter={StaticResource TimeSpanFormatConverter}}" Grid.Column="2" />
+          </Grid>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+
+    </ListView>
+
   </DockPanel>
 
 </Window>
