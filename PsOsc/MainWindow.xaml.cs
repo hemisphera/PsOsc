@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using eos.Mvvm.Converters;
 
-namespace WpfApp1
+namespace Hsp.PsOsc
 {
   /// <summary>
   /// Interaction logic for MainWindow.xaml

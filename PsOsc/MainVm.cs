@@ -8,7 +8,7 @@ using System.Windows.Data;
 using eos.Mvvm.Core;
 using Rug.Osc;
 
-namespace WpfApp1
+namespace Hsp.PsOsc
 {
 
   public class MainVm : ViewModelBase
@@ -40,9 +40,9 @@ namespace WpfApp1
       set => SetAutoFieldValue(value);
     }
 
-    public SongVm SelectedSong
+    public Song SelectedSong
     {
-      get => GetAutoFieldValue<SongVm>();
+      get => GetAutoFieldValue<Song>();
       set
       {
         SetAutoFieldValue(value);
@@ -50,9 +50,9 @@ namespace WpfApp1
       }
     }
 
-    public SongVm CurrentSong
+    public Song CurrentSong
     {
-      get => GetAutoFieldValue<SongVm>();
+      get => GetAutoFieldValue<Song>();
       set
       {
         var oldSong = CurrentSong;
@@ -85,7 +85,7 @@ namespace WpfApp1
     });
 
 
-    public ObservableCollection<SongVm> Songs { get; }
+    public ObservableCollection<Song> Songs { get; }
     
 
     private MainVm()
@@ -101,7 +101,7 @@ namespace WpfApp1
         new LastMarkerHandler()
       };
 
-      Songs = new ObservableCollection<SongVm>();
+      Songs = new ObservableCollection<Song>();
       BindingOperations.EnableCollectionSynchronization(Songs, SyncRoot);
 
       Receiver = new OscReceiver(IPAddress.Any, 9000);

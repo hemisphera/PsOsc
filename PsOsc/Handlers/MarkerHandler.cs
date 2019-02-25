@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
-namespace WpfApp1
+namespace Hsp.PsOsc
 {
 
   internal class MarkerHandler : MessageHandlerBase
@@ -21,7 +21,7 @@ namespace WpfApp1
       var song = songs.FirstOrDefault(m => m.Index == songIndex);
       if (song == null)
       {
-        song = new SongVm
+        song = new Song
         {
           Index = songIndex
         };

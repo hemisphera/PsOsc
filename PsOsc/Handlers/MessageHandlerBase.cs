@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace WpfApp1
+namespace Hsp.PsOsc
 {
 
   public abstract class MessageHandlerBase

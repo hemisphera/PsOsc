@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using eos.Mvvm.Core;
 
-namespace WpfApp1
+namespace Hsp.PsOsc
 {
 
-  public class SongVm : ViewModelBase
+  public class Song : ViewModelBase
   {
 
     public int Index
@@ -32,6 +31,12 @@ namespace WpfApp1
           Position = 0;
         }
       }
+    }
+
+    public int? Sequence
+    {
+      get => GetAutoFieldValue<int?>();
+      set => SetAutoFieldValue(value);
     }
 
     public string Name

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using eos.Mvvm.Core;
 
-namespace WpfApp1
+namespace Hsp.PsOsc
 {
   class Mediator : MappedViewMediator
   {
