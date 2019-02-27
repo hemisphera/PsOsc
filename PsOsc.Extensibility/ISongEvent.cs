@@ -11,7 +11,7 @@ namespace Hsp.PsOsc.Extensibility
     string VoiceGroup { get; set; }
 
 
-    void Run();
+    void Run(IPsOscEngine engine);
 
   }
 

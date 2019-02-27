@@ -1,38 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
 
 namespace Hsp.PsOsc
 {
 
-  internal class MarkerHandler : MessageHandlerBase
+  internal class RegionHandler : MessageHandlerBase
   {
 
-    public MarkerHandler() : base("^/marker/(?<index>[0-9]+)/(?<property>.*?)$")
+    public RegionHandler() : base("^/region/(?<index>[0-9]+)/(?<property>.*?)$")
     {
     }
 
     public override void Process(Dictionary<string, string> pathArguments, object[] values)
     {
-      var songs = MainVm.Instance.Songs;
+      var regionIndex = int.Parse(pathArguments["index"]);
 
-      var songIndex = int.Parse(pathArguments["index"]);
-      var song = songs.FirstOrDefault(m => m.Index == songIndex);
-      if (song == null)
-      {
-        song = new Song
-        {
-          Index = songIndex
-        };
-        songs.Add(song);
-      }
-
-
+      var song = Engine.Instance.GetRegion(regionIndex);
       if (pathArguments["property"] == "name")
         song.Name = (string) values[0];
       if (pathArguments["property"] == "time")
         song.StartTime = (float) values[0];
+      if (pathArguments["property"] == "length")
+        song.Duration = (float) values[0];
       if (pathArguments["property"] == "number/str")
       {
         var numberStr = (string) values[0];
@@ -41,9 +30,6 @@ namespace Hsp.PsOsc
         else
           song.Id = null;
       }
-
-      song.Recalculate();
-
     }
 
   }

@@ -64,8 +64,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Engine.cs" />
+    <Compile Include="Handlers\TrackHandler.cs" />
+    <Compile Include="Models\PsSongEvent.cs" />
     <Compile Include="Models\Setlist.cs" />
+    <Compile Include="Models\SlotBase.cs" />
     <Compile Include="Models\SongConfiguration.cs" />
+    <Compile Include="TrackControl.xaml.cs">
+      <DependentUpon>TrackControl.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -74,20 +81,26 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Handlers\LastMarkerHandler.cs" />
+    <Compile Include="Handlers\LastRegionHandler.cs" />
     <Compile Include="Handlers\TimeHandler.cs" />
     <Compile Include="MainVm.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="TrackControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\MarkerHandler.cs" />
+    <Compile Include="Handlers\RegionHandler.cs" />
     <Compile Include="Models\OscSongEvent.cs" />
-    <Compile Include="Models\Song.cs" />
+    <Compile Include="Models\RegionSlot.cs" />
     <Compile Include="Mediator.cs" />
     <Compile Include="Handlers\MessageHandlerBase.cs" />
+    <Compile Include="Models\SongEventInstance.cs" />
+    <Compile Include="Models\TrackSlot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

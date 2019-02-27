@@ -31,5 +31,32 @@ namespace Hsp.PsOsc.Properties {
                 return ((string)(this["SongLibraryFolder"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10.0.0.70")]
+        public string DawHostname {
+            get {
+                return ((string)(this["DawHostname"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9010")]
+        public int DawPort {
+            get {
+                return ((int)(this["DawPort"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9000")]
+        public int LocalPort {
+            get {
+                return ((int)(this["LocalPort"]));
+            }
+        }
     }
 }

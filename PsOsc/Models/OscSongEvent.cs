@@ -1,5 +1,4 @@
-﻿using System;
-using Hsp.PsOsc.Extensibility;
+﻿using Hsp.PsOsc.Extensibility;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -39,9 +38,10 @@ namespace Hsp.PsOsc
       jw.WriteEndObject();
     }
 
-    public void Run()
+
+    public void Run(IPsOscEngine engine)
     {
-      throw new NotImplementedException();
+      engine.SendOscMessage(Address, Data);
     }
 
   }

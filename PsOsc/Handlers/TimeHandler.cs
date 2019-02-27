@@ -13,8 +13,7 @@ namespace Hsp.PsOsc
 
     public override void Process(Dictionary<string, string> pathArguments, object[] values)
     {
-      MainVm.Instance.Time = (float)values[0];
-      MainVm.Instance.CurrentSong?.UpdateTime();
+      Engine.Instance.CurrentTime = (float)values[0];
     }
 
   }

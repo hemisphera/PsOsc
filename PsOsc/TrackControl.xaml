@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="Hsp.PsOsc.TrackControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Hsp.PsOsc"
+             xmlns:converters="clr-namespace:eos.Mvvm.Converters;assembly=eos.Mvvm.Core"
+             mc:Ignorable="d" 
+             Width="85" Height="85"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+  <UserControl.Resources>
+
+    <converters:EventedConverter x:Key="MutedColorConverter" OnConvert="MutedColorConverter_OnOnConvert" />
+    <converters:EventedConverter x:Key="SoloedColorConverter" OnConvert="SoloedColorConverter_OnOnConvert" />
+    <converters:EventedConverter x:Key="BoolToOpacityConverter" OnConvert="BoolToOpacityConverter_OnOnConvert" />
+
+  </UserControl.Resources>
+
+  <Grid Opacity="{Binding Path=Enabled, Converter={StaticResource BoolToOpacityConverter}}"
+          IsEnabled="{Binding Path=Enabled}">
+    
+    <ProgressBar Minimum="0" Maximum="1" Value="{Binding Path=Volume}" Margin="2" Opacity="0.4" 
+                 Orientation="Vertical" />
+
+    <DockPanel>
+
+      <TextBlock DockPanel.Dock="Top" Text="{Binding Path=Id}" FontSize="10" TextAlignment="Center" />
+
+      <UniformGrid Columns="2" DockPanel.Dock="Top" Height="30" Opacity="0.5">
+        <UniformGrid.Resources>
+          <Style TargetType="Button">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="FontSize" Value="8" />
+          </Style>
+        </UniformGrid.Resources>
+        <Button Content="M" Background="{Binding Path=IsMuted, Converter={StaticResource MutedColorConverter}}" 
+                Command="{Binding Source={x:Static local:MainVm.Instance}, Path=ToggleMuteCommand}" CommandParameter="{Binding}" />
+        <Button Content="S" Background="{Binding Path=IsSoloed, Converter={StaticResource SoloedColorConverter}}"
+                Command="{Binding Source={x:Static local:MainVm.Instance}, Path=ToggleSoloCommand}" CommandParameter="{Binding}" />
+      </UniformGrid>
+
+      <TextBlock Text="{Binding Path=Name}" FontSize="15" TextWrapping="WrapWithOverflow" />
+
+    </DockPanel>
+
+  </Grid>
+
+</UserControl>
