@@ -1,4 +1,5 @@
 ﻿using Hsp.PsOsc.Extensibility;
+using System.Threading.Tasks;
 
 namespace Hsp.PsOsc
 {
@@ -8,12 +9,21 @@ namespace Hsp.PsOsc
 
     private ISongEvent Event { get; }
 
-    public bool Triggered { get; }
+    public bool Triggered { get; private set; }
+
+    public float TriggerTime => Event.TriggerTime;
 
 
     public SongEventInstance(ISongEvent @event)
     {
       Event = @event;
+    }
+
+
+    public void Run()
+    {
+      Task.Run(() => Event.Run(Engine.Instance));
+      Triggered = true;
     }
 
   }

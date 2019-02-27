@@ -33,7 +33,6 @@ namespace Hsp.PsOsc
 
     protected override void Update()
     {
-      //throw new System.NotImplementedException();
     }
 
     public async Task ToggleMute()

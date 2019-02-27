@@ -6,27 +6,25 @@ using System.Net;
 using System.Threading.Tasks;
 using eos.Mvvm.Core;
 using Hsp.PsOsc.Extensibility;
-using Rug.Osc;
 
 namespace Hsp.PsOsc
 {
 
-  public class Engine : ViewModelBase, IPsOscEngine
+  public class Engine : ViewModelBase, IPsOscEngine, IDisposable
   {
 
-    private const int TrackCount = 64;
+    public const int TrackCount = 64;
 
-    private const int RegionCount = 64;
+    public const int RegionCount = 64;
 
-
-    private OscReceiver Receiver { get; set; }
-
-    private OscSender Sender { get; set; }
 
 
     private static Engine _instance;
 
     public static Engine Instance => _instance ?? (_instance = new Engine());
+
+
+    public OscInterface Osc { get; }
 
 
     private List<RegionSlot> RegionsInternal { get; }
@@ -39,9 +37,9 @@ namespace Hsp.PsOsc
     public IReadOnlyList<ITrack> Tracks => TracksInternal.AsReadOnly();
 
 
-    public List<SongConfiguration> SongConfigurations { get; }
+    public OscInterface Interface { get; }
 
-    public List<MessageHandlerBase> Handlers { get; }
+    public List<SongConfiguration> SongConfigurations { get; }
 
     public IRegion CurrentRegion
     {
@@ -49,6 +47,7 @@ namespace Hsp.PsOsc
       set
       {
         SetAutoFieldValue(value);
+        BeginSongPlayback();
         CurrentRegionChanged?.Invoke(this, value);
       }
     }
@@ -59,7 +58,19 @@ namespace Hsp.PsOsc
       set
       {
         SetAutoFieldValue(value);
-        (CurrentRegion as RegionSlot)?.UpdateTime(value);
+        (CurrentRegion as RegionSlot)?.TickAbsolute(value);
+      }
+    }
+
+    public bool Playing
+    {
+      get => GetAutoFieldValue<bool>();
+      set
+      {
+        SetAutoFieldValue(value);
+        if (!value)
+          StopSongPlayback();
+        BeginSongPlayback();
       }
     }
 
@@ -77,60 +88,34 @@ namespace Hsp.PsOsc
       for (var i = 0; i < RegionCount; i++)
         TracksInternal.Add(new TrackSlot(i + 1));
 
-      Handlers = new List<MessageHandlerBase>
-      {
-        new RegionHandler(),
-        new TimeHandler(),
-        new LastRegionHandler(),
-        new TrackHandler()
-      };
+      Interface = new OscInterface();
+      Interface.Handlers.AddRange(
+        new MessageHandlerBase[] {
+          new RegionHandler(),
+          new TimeHandler(),
+          new LastRegionHandler(),
+          new TrackHandler(),
+          new PlayStateHandler()
+        });
 
       SongConfigurations = new List<SongConfiguration>();
-
-      Connect();
     }
 
 
-    private void Connect()
+    private void BeginSongPlayback()
     {
-      Receiver = new OscReceiver(IPAddress.Any, Properties.Settings.Default.LocalPort);
-      Receiver.Connect();
-      Receiver.Close();
-      Receiver.Connect();
-
-      Sender = new OscSender(IPAddress.Parse(Properties.Settings.Default.DawHostname), 0, Properties.Settings.Default.DawPort);
-      Sender.Connect();
-      Sender.Close();
-      Sender.Connect();
-      
-      Task.Run(OscReceiverTaskHandler);
-
-      SendOscMessage("/device/region/count", 0);
-      SendOscMessage("/device/region/count", RegionCount);
-      SendOscMessage("/device/track/count", 0);
-      SendOscMessage("/device/track/count", TrackCount);
-      }
-
-    private Task OscReceiverTaskHandler()
-    {
-      while (true)
-      {
-        var packet = Receiver.Receive();
-        var messages = packet is OscBundle bundle ? bundle.Cast<OscMessage>().ToArray() : new[] { packet as OscMessage };
-        foreach (var message in messages)
-        foreach (var handler in Handlers)
-        {
-          var m = handler.Regex.Match(message.Address);
-          if (!m.Success) continue;
-
-          var groupNames = handler.Regex.GetGroupNames();
-          var args = groupNames.ToDictionary(
-            name => name,
-            name => m.Groups[name].Value);
-          handler.Process(args, message.ToArray());
-        }
-      }
+      if (!Playing) return;
+      if (!(CurrentRegion is RegionSlot slot)) return;
+      slot.BeginPlayback(CurrentTime);
     }
+
+    private void StopSongPlayback()
+    {
+      if (Playing) return;
+      if (!(CurrentRegion is RegionSlot slot)) return;
+      slot.StopPlayback(CurrentTime);
+    }
+
 
     public void LoadSongs()
     {
@@ -153,7 +138,7 @@ namespace Hsp.PsOsc
 
     public void SendOscMessage(string address, params object[] arguments)
     {
-      Sender.Send(new OscMessage(address, arguments));
+      Interface.Send(address, arguments);
     }
 
 
@@ -165,6 +150,12 @@ namespace Hsp.PsOsc
     public RegionSlot GetRegion(int index)
     {
       return RegionsInternal.FirstOrDefault(t => t.Index == index);
+    }
+
+
+    public void Dispose()
+    {
+      Interface?.Dispose();
     }
 
   }

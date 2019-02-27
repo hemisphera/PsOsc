@@ -1,0 +1,13 @@
+{
+    "SongName": "TheFirstSong",
+    "Events": [
+        {
+            "TriggerTime": 5,
+            "VoiceGroup": "",
+            "ClrType": "Hsp.PsOsc.OscSongEvent",
+            "Data": {
+                "Address": "/stop"
+            }
+        }
+    ]
+}

@@ -1,4 +1,5 @@
-﻿using Hsp.PsOsc.Extensibility;
+﻿using System;
+using Hsp.PsOsc.Extensibility;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -17,12 +18,15 @@ namespace Hsp.PsOsc
 
     public string Data { get; set; }
 
+    public string DataType { get; set; }
+
 
     public void ReadJson(JsonReader jr, JsonSerializer serializer)
     {
       var jo = JObject.Load(jr);
       Data = jo.Value<string>(nameof(Data));
       Address = jo.Value<string>(nameof(Address));
+      DataType = jo.Value<string>(nameof(DataType));
     }
 
     public void WriteJson(JsonWriter jw, JsonSerializer serializer)
@@ -35,13 +39,35 @@ namespace Hsp.PsOsc
       jw.WritePropertyName(nameof(Data));
       jw.WriteValue(Data);
 
+      if (!String.IsNullOrEmpty(DataType))
+      {
+        jw.WritePropertyName(nameof(DataType));
+        jw.WriteValue(Data);
+      }
+
       jw.WriteEndObject();
     }
 
 
     public void Run(IPsOscEngine engine)
     {
-      engine.SendOscMessage(Address, Data);
+      if (String.IsNullOrEmpty(Data))
+        engine.SendOscMessage(Address);
+      else
+        engine.SendOscMessage(Address, ConvertValue());
+    }
+
+    private object ConvertValue()
+    {
+      if (String.IsNullOrEmpty(DataType))
+        DataType = "s";
+      var typeChar = DataType.ToLowerInvariant()[0];
+      switch (typeChar)
+      {
+        case 'f': return float.Parse(Data);
+        case 'b': return (Single) (bool.Parse(Data) ? 1 : 0);
+        default: return Data;
+      }
     }
 
   }

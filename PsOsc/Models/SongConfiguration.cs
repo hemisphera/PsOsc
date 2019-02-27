@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Hsp.PsOsc.Extensibility;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -16,10 +18,15 @@ namespace Hsp.PsOsc
 
     public List<ISongEvent> Events { get; }
 
+    private SongEventInstance NextEvent { get; set; }
+
+    public Queue<SongEventInstance> EventQueue { get; }
+
 
     public SongConfiguration()
     {
       Events = new List<ISongEvent>();
+      EventQueue = new Queue<SongEventInstance>();
     }
 
 
@@ -30,8 +37,8 @@ namespace Hsp.PsOsc
       if (type == null) return null;
 
       var typedItem = (ISongEvent)Activator.CreateInstance(type);
-      typedItem.TriggerTime = obj.Value<float>();
-      typedItem.VoiceGroup = obj.Value<string>();
+      typedItem.TriggerTime = obj.Value<float>(nameof(ISongEvent.TriggerTime));
+      typedItem.VoiceGroup = obj.Value<string>(nameof(ISongEvent.VoiceGroup));
 
       var subReader = (obj.GetValue("Data") as JObject)?.CreateReader();
       if (subReader == null) return null;
@@ -116,6 +123,37 @@ namespace Hsp.PsOsc
       using (var jw = new JsonTextWriter(sw))
         s.Serialize(jw, this);
     }
+
+
+    private void FindNextEvent()
+    {
+      NextEvent =
+        (EventQueue.Count == 0)
+        ? null 
+        : EventQueue.Peek();
+    }
+
+
+    public void Init(float relativePos)
+    {
+      EventQueue.Clear();
+      foreach (var @event in Events.Where(e => e.TriggerTime >= relativePos))
+        EventQueue.Enqueue(new SongEventInstance(@event));
+      FindNextEvent();
+    }
+
+    public void Tick(float relativePos)
+    {
+      if (NextEvent == null) return;
+
+      while (NextEvent?.TriggerTime <= relativePos)
+      {
+        var ev = EventQueue.Dequeue();
+        ev.Run();
+        FindNextEvent();
+      }
+    }
+
 
   }
 

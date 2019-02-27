@@ -65,7 +65,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Engine.cs" />
+    <Compile Include="Handlers\PlayStateHandler.cs" />
     <Compile Include="Handlers\TrackHandler.cs" />
+    <Compile Include="Infrastructure\Extensions.cs" />
+    <Compile Include="Models\OscInterface.cs" />
     <Compile Include="Models\PsSongEvent.cs" />
     <Compile Include="Models\Setlist.cs" />
     <Compile Include="Models\SlotBase.cs" />

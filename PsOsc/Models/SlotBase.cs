@@ -26,9 +26,11 @@ namespace Hsp.PsOsc
       get => GetAutoFieldValue<int?>();
       set
       {
-        SetAutoFieldValue(value);
-        RaisePropertyChanged(nameof(Enabled));
-        TriggerUpdate();
+        if (SetAutoFieldValue(value))
+        {
+          RaisePropertyChanged(nameof(Enabled));
+          TriggerUpdate();
+        }
       }
     }
 
@@ -37,8 +39,8 @@ namespace Hsp.PsOsc
       get => GetAutoFieldValue<string>();
       set
       {
-        SetAutoFieldValue(value);
-        TriggerUpdate();
+        if (SetAutoFieldValue(value))
+          TriggerUpdate();
       }
     }
 
@@ -54,6 +56,7 @@ namespace Hsp.PsOsc
 
     protected void TriggerUpdate()
     {
+      /*
       UpdateIn = DateTime.Now.Add(TriggerDelay);
 
       if (FindItemTask == null || FindItemTask.IsCompleted)
@@ -63,6 +66,8 @@ namespace Hsp.PsOsc
             Thread.Sleep(50);
           Update();
         });
+      */
+      Update();
     }
 
     protected abstract void Update();

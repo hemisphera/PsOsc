@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using eos.Mvvm.Core;
 using Hsp.PsOsc.Extensibility;
 
@@ -19,8 +20,8 @@ namespace Hsp.PsOsc
       get => GetAutoFieldValue<float>();
       set
       {
-        SetAutoFieldValue(value);
-        TriggerUpdate();
+        if (SetAutoFieldValue(value))
+          TriggerUpdate();
       }
     }
 
@@ -42,6 +43,7 @@ namespace Hsp.PsOsc
       private set => SetAutoFieldValue(value);
     }
 
+
     public SongConfiguration Configuration { get; private set; }
 
 
@@ -50,16 +52,38 @@ namespace Hsp.PsOsc
     }
 
 
-    public void UpdateTime(float absolutePos)
+    public void BeginPlayback(float absolutePos)
     {
-      var newPosition = absolutePos - StartTime;
-      if (newPosition < 0) newPosition = 0;
-      Position = newPosition;
+      var relativePos = absolutePos - StartTime;
+      if (relativePos < 0) relativePos = 0;
 
-      if (Duration == null)
-        Percentage = 0;
-      else
-        Percentage = Position / Duration.Value;
+      Configuration?.Init(relativePos);
+      Tick(relativePos);
+    }
+
+    public void StopPlayback(float currentTime)
+    {
+    }
+
+    public void Tick(float relativePos)
+    {
+      Position = relativePos;
+      Configuration?.Tick(relativePos);
+
+      DispatchAsync(() =>
+      {
+        if (Duration == null)
+          Percentage = 0;
+        else
+          Percentage = Position / Duration.Value;
+      });
+    }
+
+    public void TickAbsolute(float value)
+    {
+      var relativePos = value - StartTime;
+      if (relativePos < 0) relativePos = 0;
+      Tick(relativePos);
     }
 
     protected override void Update()
@@ -71,8 +95,6 @@ namespace Hsp.PsOsc
         Percentage = 0;
         StartTime = 0;
       }
-      var previousSong = Engine.Instance.GetRegion(Index - 1);
-      previousSong?.Update();
     }
 
   }

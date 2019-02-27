@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using eos.Mvvm.Converters;
+using Hsp.PsOsc.Infrastructure;
 
 namespace Hsp.PsOsc
 {
@@ -21,11 +22,18 @@ namespace Hsp.PsOsc
   /// </summary>
   public partial class MainWindow : Window
   {
+
+    private static Brush GreenColorBrush = new SolidColorBrush(Colors.Green.ChangeAlpha(50));
+
+    private static Brush TransparentColorBrush = new SolidColorBrush(Colors.Transparent);
+
+
     public MainWindow()
     {
       InitializeComponent();
       DataContext = MainVm.Instance;
     }
+
 
     private static string FormatTime(float? ptime)
     {
@@ -39,9 +47,16 @@ namespace Hsp.PsOsc
       return $"{ts.Hours:D2}:{ts.Minutes:D2}:{ts.Seconds:D2}.{ms:D2}";
     }
 
+
     private void TimeSpanFormatConverter_OnOnConvert(object sender, ConverterEventArgs e)
     {
       e.Result = FormatTime((float?) e.Value);
+    }
+
+    private void PlayingColorConverter_OnOnConvert(object sender, ConverterEventArgs e)
+    {
+      var isSet = (bool) e.Value;
+      e.Result = isSet ? GreenColorBrush : TransparentColorBrush;
     }
 
   }

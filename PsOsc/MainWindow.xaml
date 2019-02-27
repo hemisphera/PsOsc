@@ -4,21 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hsp.PsOsc"
-        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
         xmlns:converters="clr-namespace:eos.Mvvm.Converters;assembly=eos.Mvvm.Core"
-        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="500">
 
   <Window.Resources>
     <converters:EventedConverter x:Key="TimeSpanFormatConverter" OnConvert="TimeSpanFormatConverter_OnOnConvert" />
+    <converters:EventedConverter x:Key="PlayingColorConverter" OnConvert="PlayingColorConverter_OnOnConvert" />
   </Window.Resources>
 
   <DockPanel>
 
+    <StatusBar DockPanel.Dock="Bottom" Height="25">
+      <StatusBarItem Content="{Binding Source={x:Static local:Engine.Instance}, Path=Interface.ReceiverState}" ContentStringFormat="RCV: {0}" />
+      <StatusBarItem Content="{Binding Source={x:Static local:Engine.Instance}, Path=Interface.SenderState}" ContentStringFormat="SND: {0}" />
+    </StatusBar>
+    
     <UniformGrid Columns="2" DockPanel.Dock="Top" Height="55" >
       <TextBlock Text="{Binding Source={x:Static local:Engine.Instance}, Path=CurrentTime, Converter={StaticResource TimeSpanFormatConverter}}" FontSize="26" 
-                 HorizontalAlignment="Center" VerticalAlignment="Center" />
+                 Background="{Binding Source={x:Static local:Engine.Instance}, Path=Playing, Converter={StaticResource PlayingColorConverter}}"
+                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
       <Grid>
         <ProgressBar Minimum="0" Maximum="1" Value="{Binding Source={x:Static local:Engine.Instance}, Path=CurrentRegion.Percentage, Mode=OneWay}" Opacity="0.25" />
         <DockPanel>
@@ -32,12 +37,13 @@
       </Grid>
     </UniformGrid>
 
-    <UniformGrid DockPanel.Dock="Bottom" Columns="3" Height="75">
+    <UniformGrid DockPanel.Dock="Bottom" Columns="4" Height="55">
       <UniformGrid.Resources>
         <Style TargetType="Button">
           <Setter Property="Margin" Value="2" />
         </Style>
       </UniformGrid.Resources>
+      <Button DockPanel.Dock="Right" Content="Reconnect" Command="{Binding Path=ReconnectCommand}" />
       <Button DockPanel.Dock="Right" Content="Play" Command="{Binding Path=PlayCommand}" />
       <Button DockPanel.Dock="Right" Content="Pause" Command="{Binding Path=PauseCommand}" />
       <Button DockPanel.Dock="Right" Content="Stop" Command="{Binding Path=StopCommand}" />

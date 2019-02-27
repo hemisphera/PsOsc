@@ -30,6 +30,15 @@ namespace Hsp.PsOsc
     }
 
 
+    public UiCommand ReconnectCommand => GetAutoFieldValue(new UiCommand
+    {
+      ExecuteAction = parameter =>
+      {
+        Engine.Instance.Interface.Disconnect();
+        Engine.Instance.Interface.Connect();
+      }
+    });
+
     public UiCommand PlayCommand => GetAutoFieldValue(new UiCommand
     {
       ExecuteAction = parameter =>
@@ -54,12 +63,6 @@ namespace Hsp.PsOsc
       }
     });
 
-    public UiCommand ReconnectCommand => GetAutoFieldValue(new UiCommand
-    {
-      Title = "Reconnect",
-      ExecuteFunction = async paramter => { await Reconnect(); }
-    });
-
     public UiCommand ToggleMuteCommand => GetAutoFieldValue(new UiCommand
     {
       Title = "Reconnect",
@@ -80,6 +83,7 @@ namespace Hsp.PsOsc
       }
     });
 
+
     public IReadOnlyList<IRegion> Songs => Engine.Instance.Regions;
 
     public IReadOnlyList<ITrack> Tracks => Engine.Instance.Tracks;
@@ -94,12 +98,6 @@ namespace Hsp.PsOsc
       BindingOperations.EnableCollectionSynchronization(Songs, SyncRoot);
     }
 
-
-
-    public async Task Reconnect()
-    {
-      await Task.CompletedTask;
-    }
 
   }
 
