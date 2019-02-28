@@ -47,9 +47,9 @@
   <ItemGroup>
     <Compile Include="IRegion.cs" />
     <Compile Include="IPsOscEngine.cs" />
+    <Compile Include="ISongEvent.cs" />
     <Compile Include="ITrack.cs" />
     <Compile Include="Json\IJsonSerializable.cs" />
-    <Compile Include="ISongEvent.cs" />
     <Compile Include="Json\JsonSerializableConverter.cs" />
     <Compile Include="Json\SerializerSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -25,7 +25,7 @@ namespace Hsp.PsOsc.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\dotNET\\PsOsc\\Songs")]
+        [global::System.Configuration.DefaultSettingValueAttribute("E:\\Hemisphera\\PsOsc\\Songs")]
         public string SongLibraryFolder {
             get {
                 return ((string)(this["SongLibraryFolder"]));
@@ -34,7 +34,7 @@ namespace Hsp.PsOsc.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10.0.0.70")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10.0.0.51")]
         public string DawHostname {
             get {
                 return ((string)(this["DawHostname"]));

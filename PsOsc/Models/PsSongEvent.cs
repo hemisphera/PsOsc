@@ -20,6 +20,7 @@ namespace Hsp.PsOsc
     public string ScriptFilename { get; set; }
 
 
+
     public void ReadJson(JsonReader jr, JsonSerializer serializer)
     {
       var jo = JObject.Load(jr);
@@ -39,8 +40,10 @@ namespace Hsp.PsOsc
     public void Run(IPsOscEngine engine)
     {
       var scriptData = File.ReadAllText(ScriptFilename);
-      var sb = ScriptBlock.Create(scriptData);
-      sb.Invoke(this, engine);
+      Engine.Instance.PowerShell.StartPipeline();
+      Engine.Instance.PowerShell.RegisterVariable("PsOscEvent", this);
+      Engine.Instance.PowerShell.AddScript(scriptData);
+      Engine.Instance.PowerShell.Invoke();
     }
 
   }

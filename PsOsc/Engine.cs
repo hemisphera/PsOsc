@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using eos.Mvvm.Core;
+using Hsp.PowerShell.Utility;
 using Hsp.PsOsc.Extensibility;
 
 namespace Hsp.PsOsc
@@ -35,6 +36,8 @@ namespace Hsp.PsOsc
 
 
     public OscInterface Interface { get; }
+
+    public PsRunner PowerShell { get; }
 
 
     public List<SongConfiguration> SongConfigurations { get; }
@@ -96,7 +99,19 @@ namespace Hsp.PsOsc
           new PlayStateHandler()
         });
 
+      PowerShell = InitPowerShell();
+
       SongConfigurations = new List<SongConfiguration>();
+    }
+
+    private PsRunner InitPowerShell()
+    {
+      var psr = new PsRunner(NullInterface.Instance);
+      psr.RegisterVariable("PsOscEngine", this);
+      psr.AddCommand("Write-Host")
+        .AddParameter("Object", "PsOsc Initialized")
+        .Invoke();
+      return psr;
     }
 
 
