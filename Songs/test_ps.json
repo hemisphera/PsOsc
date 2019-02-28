@@ -1,0 +1,13 @@
+{
+    "SongName": "Test PS",
+    "Events": [
+        {
+            "TriggerTime": 2,
+            "VoiceGroup": "",
+            "ClrType": "Hsp.PsOsc.PsSongEvent",
+            "Data": {
+                "ScriptFilename": "c:\\temp\\script.ps1"
+            }
+        }
+    ]
+}

@@ -149,11 +149,25 @@ namespace Hsp.PsOsc
       while (NextEvent?.TriggerTime <= relativePos)
       {
         var ev = EventQueue.Dequeue();
-        ev.Run();
+        TryRunEvent(ev);
         FindNextEvent();
       }
     }
 
+    private async Task TryRunEvent(SongEventInstance ev)
+    {
+      await Task.Run(() =>
+      {
+        try
+        {
+          ev.Run();
+        }
+        catch
+        {
+          // ignore
+        }
+      });
+    }
 
   }
 

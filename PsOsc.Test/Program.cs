@@ -13,6 +13,10 @@ namespace PsOsc.Test
     static void Main(string[] args)
     {
 
+      var ifc = new OscInterface();
+      ifc.Connect();
+
+      Console.ReadLine();
 
     }
 

@@ -2,6 +2,7 @@
 using Rug.Osc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -66,19 +67,7 @@ namespace Hsp.PsOsc
         while (Receiver.State == OscSocketState.Connected)
         {
           var packet = Receiver.Receive();
-          var messages = packet is OscBundle bundle ? bundle.Cast<OscMessage>().ToArray() : new[] { packet as OscMessage };
-          foreach (var message in messages)
-            foreach (var handler in Handlers)
-            {
-              var m = handler.Regex.Match(message.Address);
-              if (!m.Success) continue;
-
-              var groupNames = handler.Regex.GetGroupNames();
-              var args = groupNames.ToDictionary(
-                name => name,
-                name => m.Groups[name].Value);
-              handler.Process(args, message.ToArray());
-            }
+          ProcessMessage(packet);
         }
       }
       catch
@@ -87,6 +76,23 @@ namespace Hsp.PsOsc
       }
     }
 
+    private void ProcessMessage(OscPacket packet)
+    {
+      var messages = packet is OscBundle bundle ? bundle.Cast<OscMessage>().ToArray() : new[] { packet as OscMessage };
+
+      foreach (var message in messages)
+      foreach (var handler in Handlers)
+      {
+        var m = handler.Regex.Match(message.Address);
+        if (!m.Success) continue;
+
+        var groupNames = handler.Regex.GetGroupNames();
+        var args = groupNames.ToDictionary(
+          name => name,
+          name => m.Groups[name].Value);
+        handler.Process(args, message.ToArray());
+      }
+    }
 
     public void Send(string address, params object[] arguments)
     {
@@ -105,26 +111,7 @@ namespace Hsp.PsOsc
       Sender = new OscSender(IPAddress.Parse(Properties.Settings.Default.DawHostname), 0, Properties.Settings.Default.DawPort);
       Sender.Connect();
 
-      Task.Run(() =>
-      {
-        while (Receiver.State == OscSocketState.Connected)
-        {
-          var packet = Receiver.Receive();
-          var messages = packet is OscBundle bundle ? bundle.Cast<OscMessage>().ToArray() : new[] { packet as OscMessage };
-          foreach (var message in messages)
-            foreach (var handler in Handlers)
-            {
-              var m = handler.Regex.Match(message.Address);
-              if (!m.Success) continue;
-
-              var groupNames = handler.Regex.GetGroupNames();
-              var args = groupNames.ToDictionary(
-                name => name,
-                name => m.Groups[name].Value);
-              handler.Process(args, message.ToArray());
-            }
-        }
-      });
+      Task.Run(() => OscReceiverTaskHandler());
 
       Send("/device/region/count", 0);
       Send("/device/region/count", Engine.RegionCount);

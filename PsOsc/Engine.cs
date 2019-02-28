@@ -24,9 +24,6 @@ namespace Hsp.PsOsc
     public static Engine Instance => _instance ?? (_instance = new Engine());
 
 
-    public OscInterface Osc { get; }
-
-
     private List<RegionSlot> RegionsInternal { get; }
 
     private List<TrackSlot> TracksInternal { get; }
@@ -38,6 +35,7 @@ namespace Hsp.PsOsc
 
 
     public OscInterface Interface { get; }
+
 
     public List<SongConfiguration> SongConfigurations { get; }
 

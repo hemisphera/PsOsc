@@ -1,13 +1,18 @@
 ﻿using System;
+using System.IO;
+using System.Management.Automation;
+using System.Net;
+using Hsp.PowerShell.Utility;
 using Hsp.PsOsc.Extensibility;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Hsp.PsOsc
 {
 
   public class PsSongEvent : ISongEvent
   {
-    
+
     public float TriggerTime { get; set; }
     
     public string VoiceGroup { get; set; }
@@ -17,17 +22,25 @@ namespace Hsp.PsOsc
 
     public void ReadJson(JsonReader jr, JsonSerializer serializer)
     {
-      throw new NotImplementedException();
+      var jo = JObject.Load(jr);
+      ScriptFilename = jo.Value<string>(nameof(ScriptFilename));
     }
 
     public void WriteJson(JsonWriter jw, JsonSerializer serializer)
     {
-      throw new NotImplementedException();
+      jw.WriteStartObject();
+
+      jw.WritePropertyName(nameof(ScriptFilename));
+      jw.WriteValue(ScriptFilename ?? "");
+
+      jw.WriteEndObject();
     }
 
     public void Run(IPsOscEngine engine)
     {
-      throw new NotImplementedException();
+      var scriptData = File.ReadAllText(ScriptFilename);
+      var sb = ScriptBlock.Create(scriptData);
+      sb.Invoke(this, engine);
     }
 
   }
