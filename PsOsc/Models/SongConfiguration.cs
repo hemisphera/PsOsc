@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Hsp.PsOsc
 
     public string SongName { get; set; }
 
-    public List<ISongEvent> Events { get; }
+    public List<SongEventBase> Events { get; }
 
     private SongEventInstance NextEvent { get; set; }
 
@@ -25,26 +26,8 @@ namespace Hsp.PsOsc
 
     public SongConfiguration()
     {
-      Events = new List<ISongEvent>();
+      Events = new List<SongEventBase>();
       EventQueue = new Queue<SongEventInstance>();
-    }
-
-
-    private static ISongEvent ReadEvent(JObject obj, JsonSerializer serializer)
-    {
-      var typeName = obj.Value<string>("ClrType");
-      var type = Type.GetType(typeName);
-      if (type == null) return null;
-
-      var typedItem = (ISongEvent)Activator.CreateInstance(type);
-      typedItem.TriggerTime = obj.Value<float>(nameof(ISongEvent.TriggerTime));
-      typedItem.VoiceGroup = obj.Value<string>(nameof(ISongEvent.VoiceGroup));
-
-      var subReader = (obj.GetValue("Data") as JObject)?.CreateReader();
-      if (subReader == null) return null;
-
-      typedItem.ReadJson(subReader, serializer);
-      return typedItem;
     }
 
 
@@ -53,22 +36,25 @@ namespace Hsp.PsOsc
       var jo = JObject.Load(jr);
       SongName = jo.Value<string>(nameof(SongName));
 
-      if (jo.GetValue(nameof(Events)) is JArray events)
+      if (!(jo.GetValue(nameof(Events)) is JArray events)) return;
+
+      Events.Clear();
+      foreach (var joEvent in events.Cast<JObject>())
       {
-        Events.Clear();
-        foreach (var item in events)
+        try
         {
-          if (!(item is JObject itemObject)) continue;
-          try
-          {
-            var @event = ReadEvent(itemObject, serializer);
-            if (@event != null)
-              Events.Add(@event);
-          }
-          catch
-          {
-            // ignore
-          }
+          var eventType = Type.GetType(joEvent.Value<string>("ClrType"));
+          if (eventType == null) continue;
+          var eventInstance = (SongEventBase) Activator.CreateInstance(eventType);
+          eventInstance.TriggerTime = joEvent.Value<float>(nameof(SongEventBase.TriggerTime));
+          eventInstance.VoiceGroup = joEvent.Value<int>(nameof(SongEventBase.VoiceGroup));
+          eventInstance.Program = joEvent.Value<bool>(nameof(SongEventBase.Program));
+          eventInstance.SetDataFromObject(joEvent["Data"] as JObject);
+          Events.Add(eventInstance);
+        }
+        catch
+        {
+          // ignore
         }
       }
     }
@@ -88,7 +74,10 @@ namespace Hsp.PsOsc
         jw.WriteStartObject();
 
         jw.WritePropertyName("ClrType");
-        jw.WriteValue(item.GetType().FullName);
+        jw.WriteValue(GetType().FullName);
+
+        jw.WritePropertyName(nameof(item.Program));
+        jw.WriteValue(item.Program);
 
         jw.WritePropertyName(nameof(item.TriggerTime));
         jw.WriteValue(item.TriggerTime);
@@ -97,7 +86,7 @@ namespace Hsp.PsOsc
         jw.WriteValue(item.VoiceGroup);
 
         jw.WritePropertyName("Data");
-        item.WriteJson(jw, serializer);
+        item.GetDataAsObject().WriteTo(jw, serializer.Converters.ToArray());
 
         jw.WriteEndObject();
       }
@@ -137,8 +126,8 @@ namespace Hsp.PsOsc
     public void Init(float relativePos)
     {
       EventQueue.Clear();
-      foreach (var @event in Events.Where(e => e.TriggerTime >= relativePos))
-        EventQueue.Enqueue(new SongEventInstance(@event));
+      foreach (var ev in Events.Where(e => e.TriggerTime >= relativePos))
+        EventQueue.Enqueue(new SongEventInstance(ev));
       FindNextEvent();
     }
 
@@ -154,7 +143,7 @@ namespace Hsp.PsOsc
       }
     }
 
-    private async Task TryRunEvent(SongEventInstance ev)
+    private static async Task TryRunEvent(SongEventInstance ev)
     {
       await Task.Run(() =>
       {

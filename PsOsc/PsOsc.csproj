@@ -71,11 +71,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Engine.cs" />
+    <Compile Include="Events\MidiSongEvent.cs" />
     <Compile Include="Handlers\PlayStateHandler.cs" />
     <Compile Include="Handlers\TrackHandler.cs" />
     <Compile Include="Infrastructure\Extensions.cs" />
     <Compile Include="Infrastructure\OscInterface.cs" />
-    <Compile Include="Models\PsSongEvent.cs" />
+    <Compile Include="Events\PsSongEvent.cs" />
     <Compile Include="Models\Setlist.cs" />
     <Compile Include="Models\SlotBase.cs" />
     <Compile Include="Models\SongConfiguration.cs" />
@@ -104,7 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers\RegionHandler.cs" />
-    <Compile Include="Models\OscSongEvent.cs" />
+    <Compile Include="Events\OscSongEvent.cs" />
     <Compile Include="Models\RegionSlot.cs" />
     <Compile Include="Mediator.cs" />
     <Compile Include="Handlers\MessageHandlerBase.cs" />

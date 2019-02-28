@@ -3,7 +3,7 @@
     "Events": [
         {
             "TriggerTime": 2,
-            "VoiceGroup": "",
+            "VoiceGroup": 0,
             "ClrType": "Hsp.PsOsc.PsSongEvent",
             "Data": {
                 "ScriptFilename": "E:\\Hemisphera\\PsOsc\\Songs\\test_ps.ps1"

@@ -7,16 +7,16 @@ namespace Hsp.PsOsc
   public class SongEventInstance
   {
 
-    private ISongEvent Event { get; }
+    private SongEventBase Event { get; }
 
     public bool Triggered { get; private set; }
 
     public float TriggerTime => Event.TriggerTime;
 
 
-    public SongEventInstance(ISongEvent @event)
+    public SongEventInstance(SongEventBase ev)
     {
-      Event = @event;
+      Event = ev;
     }
 
 

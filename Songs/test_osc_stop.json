@@ -3,7 +3,7 @@
     "Events": [
         {
             "TriggerTime": 5,
-            "VoiceGroup": "",
+            "VoiceGroup": 0,
             "ClrType": "Hsp.PsOsc.OscSongEvent",
             "Data": {
                 "Address": "/stop"
