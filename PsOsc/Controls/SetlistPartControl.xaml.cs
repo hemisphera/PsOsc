@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Hsp.PsOsc.Infrastructure;
 using Hsp.PsOsc.Parts;
 
 namespace Hsp.PsOsc.Controls
@@ -19,12 +20,13 @@ namespace Hsp.PsOsc.Controls
   /// <summary>
   /// Interaction logic for SetlistPartControl.xaml
   /// </summary>
-  public partial class SetlistPartControl : UserControl
+  public partial class SetlistPartControl : UserControl, IView
   {
     
     public SetlistPartControl()
     {
       InitializeComponent();
+      DataContextChanged += MainVm.OnDataContextChanged;
     }
 
 
@@ -32,6 +34,11 @@ namespace Hsp.PsOsc.Controls
     {
       var vm = DataContext as SetlistPart;
       vm?.Play();
+    }
+
+    public void RefreshView()
+    {
+      zheGrid.RefreshData();
     }
 
   }

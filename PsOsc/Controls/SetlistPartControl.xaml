@@ -23,15 +23,18 @@
           </dxb:BarSubItem>
           <dxb:BarButtonItem Command="{Binding Path=AddItemCommand}" />
           <dxb:BarButtonItem Command="{Binding Path=RemoveItemCommand}" />
+          <dxb:BarButtonItem Command="{Binding Path=MoveUpCommand}" />
+          <dxb:BarButtonItem Command="{Binding Path=MoveDownCommand}" />
         </dxb:Bar>
         </dxb:BarManager.Bars>
     </dxb:BarManager>
 
     <dxg:GridControl ItemsSource="{Binding Path=Items}" SelectedItem="{Binding Path=SelectedItem}"
-                     SelectionMode="Row" MouseDoubleClick="Control_OnMouseDoubleClick">
+                     SelectionMode="Row" MouseDoubleClick="Control_OnMouseDoubleClick"
+                     Name="zheGrid">
       <dxg:GridControl.Columns>
 
-        <dxg:GridColumn FieldName="Sequence" Width="50" AutoFilterCondition="Equals" />
+        <dxg:GridColumn FieldName="Sequence" Width="50" AutoFilterCondition="Equals" SortIndex="0" />
 
         <dxg:GridColumn FieldName="Name" Width="*" />
 

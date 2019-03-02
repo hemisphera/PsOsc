@@ -4,9 +4,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using eos.Mvvm.Core;
 using Hsp.PsOsc.Extensibility;
+using Hsp.PsOsc.Infrastructure;
 using Hsp.PsOsc.Parts;
 using Rug.Osc;
 
@@ -96,6 +98,17 @@ namespace Hsp.PsOsc
       Engine.Instance.LoadSongs();
     }
 
+
+    
+    internal static void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+      if (!(sender is IView view)) return;
+
+      if (e.OldValue is IVieWModel ovm)
+        ovm.View = null;
+      if (e.NewValue is IVieWModel nvm)
+        nvm.View = view;
+    }
 
   }
 

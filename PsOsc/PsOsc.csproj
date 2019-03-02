@@ -171,6 +171,8 @@
     <Compile Include="Handlers\PlayStateHandler.cs" />
     <Compile Include="Handlers\TrackHandler.cs" />
     <Compile Include="Infrastructure\Extensions.cs" />
+    <Compile Include="Infrastructure\IView.cs" />
+    <Compile Include="Infrastructure\IVieWModel.cs" />
     <Compile Include="Infrastructure\OscInterface.cs" />
     <Compile Include="Events\PsSongEvent.cs" />
     <Compile Include="Models\Setlist.cs" />
