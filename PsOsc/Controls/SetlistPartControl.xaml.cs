@@ -12,21 +12,26 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using eos.Mvvm.Converters;
-using Hsp.PsOsc.Infrastructure;
+using Hsp.PsOsc.Parts;
 
-namespace Hsp.PsOsc
+namespace Hsp.PsOsc.Controls
 {
   /// <summary>
-  /// Interaction logic for MainWindow.xaml
+  /// Interaction logic for SetlistPartControl.xaml
   /// </summary>
-  public partial class MainWindow : Window
+  public partial class SetlistPartControl : UserControl
   {
-
-    public MainWindow()
+    
+    public SetlistPartControl()
     {
       InitializeComponent();
-      DataContext = MainVm.Instance;
+    }
+
+
+    private void Control_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+      var vm = DataContext as SetlistPart;
+      vm?.Play();
     }
 
   }

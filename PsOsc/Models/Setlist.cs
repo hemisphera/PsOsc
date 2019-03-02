@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using eos.Mvvm.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PsOsc.Extensibility.Json;

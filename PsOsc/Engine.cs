@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using eos.Mvvm.Core;
 using Hsp.PowerShell.Utility;
 using Hsp.PsOsc.Extensibility;
@@ -25,14 +24,14 @@ namespace Hsp.PsOsc
     public static Engine Instance => _instance ?? (_instance = new Engine());
 
 
-    private List<RegionSlot> RegionsInternal { get; }
+    internal ObservableCollection<RegionSlot> RegionsInternal { get; }
 
-    private List<TrackSlot> TracksInternal { get; }
+    internal ObservableCollection<TrackSlot> TracksInternal { get; }
 
 
-    public IReadOnlyList<IRegion> Regions => RegionsInternal.AsReadOnly();
+    public IReadOnlyList<IRegion> Regions => RegionsInternal;
 
-    public IReadOnlyList<ITrack> Tracks => TracksInternal.AsReadOnly();
+    public IReadOnlyList<ITrack> Tracks => TracksInternal;
 
 
     public OscInterface Interface { get; }
@@ -59,6 +58,7 @@ namespace Hsp.PsOsc
       set
       {
         SetAutoFieldValue(value);
+        TimeChanged?.Invoke(this, value);
         (CurrentRegion as RegionSlot)?.TickAbsolute(value);
       }
     }
@@ -69,6 +69,7 @@ namespace Hsp.PsOsc
       set
       {
         SetAutoFieldValue(value);
+        MainVm.Instance.Status.Playing = value;
         if (!value)
           StopSongPlayback();
         BeginSongPlayback();
@@ -77,15 +78,17 @@ namespace Hsp.PsOsc
 
 
     public event EventHandler<IRegion> CurrentRegionChanged;
+    
+    public event EventHandler<float> TimeChanged;
 
 
     private Engine()
     {
-      RegionsInternal = new List<RegionSlot>();
+      RegionsInternal = new ObservableCollection<RegionSlot>();
       for (var i = 0; i < RegionCount; i++)
         RegionsInternal.Add(new RegionSlot(i + 1));
 
-      TracksInternal = new List<TrackSlot>();
+      TracksInternal = new ObservableCollection<TrackSlot>();
       for (var i = 0; i < RegionCount; i++)
         TracksInternal.Add(new TrackSlot(i + 1));
 
@@ -103,6 +106,7 @@ namespace Hsp.PsOsc
 
       SongConfigurations = new List<SongConfiguration>();
     }
+
 
     private PsRunner InitPowerShell()
     {
@@ -127,6 +131,13 @@ namespace Hsp.PsOsc
       if (Playing) return;
       if (!(CurrentRegion is RegionSlot slot)) return;
       slot.StopPlayback(CurrentTime);
+    }
+
+    
+    public void Play(RegionSlot region)
+    {
+      Interface.GotoRegion(region);
+      Interface.Play();
     }
 
 

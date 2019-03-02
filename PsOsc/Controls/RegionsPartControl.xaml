@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="Hsp.PsOsc.Controls.RegionsPartControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Hsp.PsOsc.Controls"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+
+      <dxg:GridControl ItemsSource="{Binding Path=Items}" SelectedItem="{Binding Path=SelectedItem}"
+                       SelectionMode="Row">
+        <dxg:GridControl.Columns>
+        
+          <dxg:GridColumn FieldName="Id" Width="50" AutoFilterValue="Is Not Null" AutoFilterCondition="Equals" />
+        
+          <dxg:GridColumn FieldName="Name" Width="*" />
+        
+          <dxg:GridColumn FieldName="StartTime" Width="100" />
+
+          <dxg:GridColumn FieldName="Duration" Width="100" />
+
+        </dxg:GridControl.Columns>
+
+        <dxg:GridControl.View>
+          <dxg:TableView ShowGroupPanel="False" AllowEditing="False" />
+        </dxg:GridControl.View>
+
+      </dxg:GridControl>
+
+    </Grid>
+
+</UserControl>

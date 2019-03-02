@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using eos.Mvvm.Core;
 using Hsp.PsOsc.Extensibility;
+using Hsp.PsOsc.Parts;
 using Rug.Osc;
 
 namespace Hsp.PsOsc
@@ -29,15 +30,6 @@ namespace Hsp.PsOsc
       set => SetAutoFieldValue(value);
     }
 
-
-    public UiCommand ReconnectCommand => GetAutoFieldValue(new UiCommand
-    {
-      ExecuteAction = parameter =>
-      {
-        Engine.Instance.Interface.Disconnect();
-        Engine.Instance.Interface.Connect();
-      }
-    });
 
     public UiCommand PlayCommand => GetAutoFieldValue(new UiCommand
     {
@@ -84,18 +76,24 @@ namespace Hsp.PsOsc
     });
 
 
-    public IReadOnlyList<IRegion> Songs => Engine.Instance.Regions;
+    public TracksPart Tracks { get; }
+    
+    public RegionsPart Regions { get; }
 
-    public IReadOnlyList<ITrack> Tracks => Engine.Instance.Tracks;
+    public SetlistPart Setlist { get; }
+    
+    public StatusPart Status { get; }
 
 
     private MainVm()
     {
       UiSettings.Mediator = new Mediator();
-      
-      Engine.Instance.LoadSongs();
+      Tracks = new TracksPart();
+      Regions = new RegionsPart();
+      Setlist = new SetlistPart();
+      Status = new StatusPart();
 
-      BindingOperations.EnableCollectionSynchronization(Songs, SyncRoot);
+      Engine.Instance.LoadSongs();
     }
 
 

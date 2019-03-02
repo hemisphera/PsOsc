@@ -35,6 +35,90 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.CodeParser.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.CodeParser.18.1.9\lib\net40\DevExpress.CodeParser.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Data.18.1.9\lib\net40\DevExpress.Data.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DataAccess.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.DataAccess.18.1.9\lib\net40\DevExpress.DataAccess.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Images.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Images.18.1.9\lib\net40\DevExpress.Images.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Mvvm.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Mvvm.18.1.9\lib\net40\DevExpress.Mvvm.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Office.v18.1.Core, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Office.Core.18.1.9\lib\net40\DevExpress.Office.v18.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v18.1.Core, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Pdf.Core.18.1.9\lib\net40\DevExpress.Pdf.v18.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v18.1.Core, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Printing.Core.18.1.9\lib\net40\DevExpress.Printing.v18.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v18.1.Core, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.RichEdit.Core.18.1.9\lib\net40\DevExpress.RichEdit.v18.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v18.1.Export, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.RichEdit.Export.18.1.9\lib\net40\DevExpress.RichEdit.v18.1.Export.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Accordion.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Navigation.18.1.9\lib\net40\DevExpress.Xpf.Accordion.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Controls.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Navigation.18.1.9\lib\net40\DevExpress.Xpf.Controls.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Core.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Core.18.1.9\lib\net40\DevExpress.Xpf.Core.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Core.v18.1.Extensions, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Core.18.1.9\lib\net40\DevExpress.Xpf.Core.v18.1.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Docking.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Navigation.18.1.9\lib\net40\DevExpress.Xpf.Docking.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.DocumentViewer.v18.1.Core, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.DocumentViewer.Core.18.1.9\lib\net40\DevExpress.Xpf.DocumentViewer.v18.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.ExpressionEditor.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.ExpressionEditor.18.1.9\lib\net40\DevExpress.Xpf.ExpressionEditor.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Grid.Core.18.1.9\lib\net40\DevExpress.Xpf.Grid.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v18.1.Core, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Grid.Core.18.1.9\lib\net40\DevExpress.Xpf.Grid.v18.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v18.1.Extensions, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Grid.Core.18.1.9\lib\net40\DevExpress.Xpf.Grid.v18.1.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Layout.v18.1.Core, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Navigation.18.1.9\lib\net40\DevExpress.Xpf.Layout.v18.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.LayoutControl.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Layout.18.1.9\lib\net40\DevExpress.Xpf.LayoutControl.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.NavBar.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Navigation.18.1.9\lib\net40\DevExpress.Xpf.NavBar.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Printing.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Printing.18.1.9\lib\net40\DevExpress.Xpf.Printing.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Ribbon.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Navigation.18.1.9\lib\net40\DevExpress.Xpf.Ribbon.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.RichEdit.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.RichEdit.18.1.9\lib\net40\DevExpress.Xpf.RichEdit.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2016White.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Themes.Office2016White.18.1.9\lib\net40\DevExpress.Xpf.Themes.Office2016White.v18.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpo.v18.1, Version=18.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Xpo.18.1.9\lib\net40\DevExpress.Xpo.v18.1.dll</HintPath>
+    </Reference>
     <Reference Include="eos.Mvvm.Core, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\eos.Mvvm.Core.1.3.68\lib\net45\eos.Mvvm.Core.dll</HintPath>
     </Reference>
@@ -70,6 +154,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\RegionsPartControl.xaml.cs">
+      <DependentUpon>RegionsPartControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SetlistPartControl.xaml.cs">
+      <DependentUpon>SetlistPartControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StatusPartControl.xaml.cs">
+      <DependentUpon>StatusPartControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TracksPartControl.xaml.cs">
+      <DependentUpon>TracksPartControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Engine.cs" />
     <Compile Include="Events\MidiSongEvent.cs" />
     <Compile Include="Handlers\PlayStateHandler.cs" />
@@ -78,11 +174,32 @@
     <Compile Include="Infrastructure\OscInterface.cs" />
     <Compile Include="Events\PsSongEvent.cs" />
     <Compile Include="Models\Setlist.cs" />
+    <Compile Include="Models\SetlistItem.cs" />
     <Compile Include="Models\SlotBase.cs" />
     <Compile Include="Models\SongConfiguration.cs" />
+    <Compile Include="Parts\RegionsPart.cs" />
+    <Compile Include="Parts\SetlistPart.cs" />
+    <Compile Include="Parts\StatusPart.cs" />
+    <Compile Include="Parts\TracksPart.cs" />
     <Compile Include="TrackControl.xaml.cs">
       <DependentUpon>TrackControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\RegionsPartControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SetlistPartControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\StatusPartControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TracksPartControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

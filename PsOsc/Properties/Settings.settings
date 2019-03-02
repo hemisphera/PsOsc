@@ -5,13 +5,13 @@
     <Setting Name="SongLibraryFolder" Type="System.String" Scope="Application">
       <Value Profile="(Default)">E:\Hemisphera\PsOsc\Songs</Value>
     </Setting>
-    <Setting Name="DawHostname" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">10.0.0.51</Value>
+    <Setting Name="DawHostname" Type="System.String" Scope="User">
+      <Value Profile="(Default)">10.0.0.70</Value>
     </Setting>
-    <Setting Name="DawPort" Type="System.Int32" Scope="Application">
+    <Setting Name="DawPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">9010</Value>
     </Setting>
-    <Setting Name="LocalPort" Type="System.Int32" Scope="Application">
+    <Setting Name="LocalPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">9000</Value>
     </Setting>
   </Settings>

@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="Hsp.PsOsc.Controls.StatusPartControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Hsp.PsOsc.Controls"
+             xmlns:converters="clr-namespace:eos.Mvvm.Converters;assembly=eos.Mvvm.Core"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+             xmlns:osc="clr-namespace:Hsp.PsOsc"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             mc:Ignorable="d">
+
+  <UserControl.Resources>
+    <converters:EventedConverter x:Key="PlayingColorConverter" OnConvert="PlayingColorConverter_OnOnConvert" />
+    <converters:EventedConverter x:Key="TimeSpanFormatConverter" OnConvert="TimeSpanFormatConverter_OnOnConvert" />
+  </UserControl.Resources>
+
+  <DockPanel LastChildFill="False">
+
+    <UniformGrid Columns="2" Height="25" DockPanel.Dock="Top">
+      <Button Content="Connect" IsEnabled="{Binding Path=Connected, Converter={StaticResource InverseBoolConverter}}" 
+              Command="{Binding Path=ConnectCommand}"/>
+      <Button Content="Disconnect" IsEnabled="{Binding Path=Connected}" 
+              Command="{Binding Path=DisconnectCommand}"/>
+    </UniformGrid>
+
+    <dxlc:LayoutControl IsEnabled="{Binding Path=Connected, Converter={StaticResource InverseBoolConverter}}"
+                        Orientation="Vertical" DockPanel.Dock="Top">
+      <dxlc:LayoutItem Label="DAW IP Address">
+        <dxe:TextEdit Text="{Binding Path=DawHostname}" />
+      </dxlc:LayoutItem>
+      <dxlc:LayoutItem Label="DAW Port">
+        <dxe:TextEdit Text="{Binding Path=HostPort}" />
+      </dxlc:LayoutItem>
+      <dxlc:LayoutItem Label="Listen Port">
+        <dxe:TextEdit Text="{Binding Path=LocalPort}" />
+      </dxlc:LayoutItem>
+    </dxlc:LayoutControl>
+
+    <Border BorderBrush="{Binding Path=Playing, Converter={StaticResource PlayingColorConverter}}" CornerRadius="2"
+            Padding="2" Margin="2" DockPanel.Dock="Top">
+      <TextBlock Text="{Binding Path=Time, Converter={StaticResource TimeSpanFormatConverter}}" FontSize="26" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    </Border>
+
+    <DockPanel Margin="5" DockPanel.Dock="Top">
+
+      <dxlc:LayoutItem Label="Current Region" DockPanel.Dock="Top" LabelPosition="Top">
+        <TextBlock Text="{Binding Source={x:Static osc:Engine.Instance}, Path=CurrentRegion}" />
+      </dxlc:LayoutItem>
+
+      <dxlc:LayoutItem Label="Current Song Configuration" DockPanel.Dock="Top" LabelPosition="Top">
+        <TextBlock Text="{Binding Source={x:Static osc:Engine.Instance}, Path=CurrentRegion.Configuration}" />
+      </dxlc:LayoutItem>
+
+    </DockPanel>
+
+    <Grid DockPanel.Dock="Top">
+
+      <Grid>
+        <ProgressBar Minimum="0" Maximum="1" Value="{Binding Source={x:Static osc:Engine.Instance}, Path=CurrentRegion.Percentage, Mode=OneWay}" Opacity="0.25" />
+        <DockPanel>
+          <TextBlock DockPanel.Dock="Bottom" 
+                     Text="{Binding Source={x:Static osc:Engine.Instance}, Path=CurrentRegion.Position, Converter={StaticResource TimeSpanFormatConverter}}"
+                     HorizontalAlignment="Center" VerticalAlignment="Center" 
+                     Foreground="DimGray" Padding="2" />
+          <TextBlock Text="{Binding Source={x:Static osc:Engine.Instance}, Path=CurrentRegion.Name}" FontSize="22"
+                     HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </DockPanel>
+      </Grid>
+
+    </Grid>
+
+  </DockPanel>
+
+</UserControl>

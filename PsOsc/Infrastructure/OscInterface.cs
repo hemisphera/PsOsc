@@ -137,6 +137,28 @@ namespace Hsp.PsOsc
     }
 
 
+    public void Play()
+    {
+      Send("/play");
+    }
+
+    public void Stop()
+    {
+      Send("/stop");
+    }
+
+    public void Pause()
+    {
+      Send("/pause");
+    }
+
+    public void GotoRegion(RegionSlot region)
+    {
+      if (region?.Id == null) return;
+      Send("/region", region.Id);
+    }
+
+
     public void Dispose()
     {
       Token.Cancel();

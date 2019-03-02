@@ -32,30 +32,39 @@ namespace Hsp.PsOsc.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10.0.0.51")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10.0.0.70")]
         public string DawHostname {
             get {
                 return ((string)(this["DawHostname"]));
             }
+            set {
+                this["DawHostname"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("9010")]
         public int DawPort {
             get {
                 return ((int)(this["DawPort"]));
             }
+            set {
+                this["DawPort"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("9000")]
         public int LocalPort {
             get {
                 return ((int)(this["LocalPort"]));
+            }
+            set {
+                this["LocalPort"] = value;
             }
         }
     }

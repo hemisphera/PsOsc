@@ -5,13 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hsp.PsOsc"
         xmlns:converters="clr-namespace:eos.Mvvm.Converters;assembly=eos.Mvvm.Core"
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+        xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
+        xmlns:controls="clr-namespace:Hsp.PsOsc.Controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="500">
-
-  <Window.Resources>
-    <converters:EventedConverter x:Key="TimeSpanFormatConverter" OnConvert="TimeSpanFormatConverter_OnOnConvert" />
-    <converters:EventedConverter x:Key="PlayingColorConverter" OnConvert="PlayingColorConverter_OnOnConvert" />
-  </Window.Resources>
+        Title="MainWindow" Height="450" Width="800">
 
   <DockPanel>
 
@@ -19,22 +17,8 @@
       <StatusBarItem Content="{Binding Source={x:Static local:Engine.Instance}, Path=Interface.ReceiverState}" ContentStringFormat="RCV: {0}" />
       <StatusBarItem Content="{Binding Source={x:Static local:Engine.Instance}, Path=Interface.SenderState}" ContentStringFormat="SND: {0}" />
     </StatusBar>
-    
+
     <UniformGrid Columns="2" DockPanel.Dock="Top" Height="55" >
-      <TextBlock Text="{Binding Source={x:Static local:Engine.Instance}, Path=CurrentTime, Converter={StaticResource TimeSpanFormatConverter}}" FontSize="26" 
-                 Background="{Binding Source={x:Static local:Engine.Instance}, Path=Playing, Converter={StaticResource PlayingColorConverter}}"
-                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-      <Grid>
-        <ProgressBar Minimum="0" Maximum="1" Value="{Binding Source={x:Static local:Engine.Instance}, Path=CurrentRegion.Percentage, Mode=OneWay}" Opacity="0.25" />
-        <DockPanel>
-          <TextBlock DockPanel.Dock="Bottom" 
-                     Text="{Binding Source={x:Static local:Engine.Instance}, Path=CurrentRegion.Position, Converter={StaticResource TimeSpanFormatConverter}}"
-                     HorizontalAlignment="Center" VerticalAlignment="Center" 
-                     Foreground="DimGray" Padding="2" />
-          <TextBlock Text="{Binding Source={x:Static local:Engine.Instance}, Path=CurrentRegion.Name}" FontSize="22"
-                     HorizontalAlignment="Center" VerticalAlignment="Center" />
-        </DockPanel>
-      </Grid>
     </UniformGrid>
 
     <UniformGrid DockPanel.Dock="Bottom" Columns="4" Height="55">
@@ -49,51 +33,33 @@
       <Button DockPanel.Dock="Right" Content="Stop" Command="{Binding Path=StopCommand}" />
     </UniformGrid>
 
-    <Grid>
+    <dxdo:DockLayoutManager>
 
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="2*" />
-        <ColumnDefinition Width="5*" />
-      </Grid.ColumnDefinitions>
+      <dxdo:LayoutGroup Orientation="Horizontal">
 
-      <ListView ItemsSource="{Binding Path=Songs}"
-                Grid.Column="0"
-                HorizontalContentAlignment="Stretch">
-        <ListView.ItemTemplate>
-          <DataTemplate>
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="80" />
-                <ColumnDefinition Width="80" />
-              </Grid.ColumnDefinitions>
-              <TextBlock Text="{Binding Path=Name}" FontSize="20" Grid.Column="0" />
-              <TextBlock Text="{Binding Path=StartTime, Converter={StaticResource TimeSpanFormatConverter}}" Grid.Column="1" />
-              <TextBlock Text="{Binding Path=Duration, Converter={StaticResource TimeSpanFormatConverter}}" Grid.Column="2" />
-            </Grid>
-          </DataTemplate>
-        </ListView.ItemTemplate>
-      </ListView>
+        <dxdo:LayoutPanel ItemWidth="1*" Caption="Status">
+          <controls:StatusPartControl DataContext="{Binding Path=Status}" />
+        </dxdo:LayoutPanel>
 
-      <ItemsControl ItemsSource="{Binding Path=Tracks}" Grid.Column="1"
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
+        <dxdo:TabbedGroup ItemWidth="3*">
 
-        <ItemsControl.ItemTemplate>
-          <DataTemplate>
-            <local:TrackControl />
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
+          <dxdo:LayoutPanel Caption="Setlist">
+            <controls:SetlistPartControl DataContext="{Binding Path=Setlist}" />
+          </dxdo:LayoutPanel>
 
-        <ItemsControl.ItemsPanel>
-          <ItemsPanelTemplate>
-            <WrapPanel IsItemsHost="True" Orientation="Horizontal" />
-          </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
+          <dxdo:LayoutPanel Caption="Regions">
+            <controls:RegionsPartControl DataContext="{Binding Path=Regions}" />
+          </dxdo:LayoutPanel>
 
-      </ItemsControl>
+          <dxdo:LayoutPanel Caption="Tracks">
+            <controls:TracksPartControl DataContext="{Binding Path=Tracks}" />
+          </dxdo:LayoutPanel>
 
+        </dxdo:TabbedGroup>
 
-    </Grid>
+      </dxdo:LayoutGroup>
+
+    </dxdo:DockLayoutManager>
 
   </DockPanel>
 

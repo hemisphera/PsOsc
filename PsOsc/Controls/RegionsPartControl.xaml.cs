@@ -12,23 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using eos.Mvvm.Converters;
-using Hsp.PsOsc.Infrastructure;
 
-namespace Hsp.PsOsc
+namespace Hsp.PsOsc.Controls
 {
   /// <summary>
-  /// Interaction logic for MainWindow.xaml
+  /// Interaction logic for RegionsPartControl.xaml
   /// </summary>
-  public partial class MainWindow : Window
+  public partial class RegionsPartControl : UserControl
   {
-
-    public MainWindow()
+    public RegionsPartControl()
     {
       InitializeComponent();
-      DataContext = MainVm.Instance;
     }
-
   }
-
 }
