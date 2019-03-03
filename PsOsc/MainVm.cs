@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
@@ -94,6 +95,10 @@ namespace Hsp.PsOsc
       Regions = new RegionsPart();
       Setlist = new SetlistPart();
       Status = new StatusPart();
+
+      var args = Environment.GetCommandLineArgs();
+      if (args.Length > 1)
+        Setlist.LoadFromFile(args[1]);
 
       Engine.Instance.LoadSongs();
     }

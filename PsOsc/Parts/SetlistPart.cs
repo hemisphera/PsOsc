@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using DevExpress.Data.Extensions;
 using DevExpress.Mvvm.Native;
@@ -94,8 +96,17 @@ namespace Hsp.PsOsc.Parts
 
     public IView View { get; set; }
 
+    private SetlistItem PlayingItem { get; set; }
+
+
+
     public SetlistPart() : base(new ObservableCollection<SetlistItem>())
     {
+      Engine.Instance.RegionFinished += (s, e) =>
+      {
+        Debug.WriteLine($"Region {e.Name} finished");
+        PlayNext();
+      };
     }
 
  
@@ -107,47 +118,82 @@ namespace Hsp.PsOsc.Parts
 
     public void Play(SetlistItem item = null)
     {
-      if (item == null)
-        item = SelectedItem;
-      if (item == null) return;
-
-      var region = item.FindRegion();
-      Engine.Instance.Play(region);
-    }
-        
-
-    public void LoadFromFile()
-    {
-      var fre = new FileRequestEventArgs
+      Task.Run(() =>
       {
-        Filter = "JSON File (*.json)|*.json",
-        Title = "Open Setlist",
-        Type = FileRequestEventArgs.RequestType.OpenFile
-      };
-      if (UiSettings.Mediator.RequestFile(fre))
-      {
-        var setlist = new Setlist();
-        setlist.LoadFromFile(fre.SelectedPath);
-        Items.Clear();
-        foreach (var item in setlist.Songs)
-          Items.Add(item);
-      }
+        if (item == null)
+          item = SelectedItem;
+
+        var region = item?.FindRegion();
+        if (region == null) return;
+
+        PlayingItem = item;
+        if (Math.Abs(PlayingItem.PauseBefore) > 0.1)
+          Thread.Sleep(TimeSpan.FromSeconds(PlayingItem.PauseBefore));
+
+        Debug.WriteLine($"Playing region {region.Name}");
+        Engine.Instance.Play(region);
+      });
     }
 
-    public void SaveToFile()
+    public void PlayNext()
     {
-      var fre = new FileRequestEventArgs
+      Task.Run(() =>
       {
-        Filter = "JSON File (*.json)|*.json",
-        Title = "Save Setlist",
-        Type = FileRequestEventArgs.RequestType.SaveFile
-      };
-      if (UiSettings.Mediator.RequestFile(fre))
+        if (PlayingItem == null) return;
+
+        if (Math.Abs(PlayingItem.PauseAfter) > 0.1)
+          Thread.Sleep(TimeSpan.FromSeconds(PlayingItem.PauseAfter));
+
+        var nextItem = Items.FirstOrDefault(i => i.Sequence > PlayingItem.Sequence);
+        Debug.WriteLine("Next: " + nextItem.Name);
+        Play(nextItem);
+      });
+    }
+
+    public void LoadFromFile(string filename = null)
+    {
+      if (String.IsNullOrEmpty(filename))
       {
-        var setlist = new Setlist();
-        setlist.Songs.AddRange(Items);
-        setlist.SaveToFile(fre.SelectedPath);
+        var fre = new FileRequestEventArgs
+        {
+          Filter = "JSON File (*.json)|*.json",
+          Title = "Open Setlist",
+          Type = FileRequestEventArgs.RequestType.OpenFile
+        };
+        if (UiSettings.Mediator.RequestFile(fre))
+          filename = fre.SelectedPath;
       }
+
+      if (String.IsNullOrEmpty(filename))
+        return;
+
+      var setlist = new Setlist();
+      setlist.LoadFromFile(filename);
+      Items.Clear();
+      foreach (var item in setlist.Songs)
+        Items.Add(item);
+    }
+
+    public void SaveToFile(string filename = null)
+    {
+      if (String.IsNullOrEmpty(filename))
+      {
+        var fre = new FileRequestEventArgs
+        {
+          Filter = "JSON File (*.json)|*.json",
+          Title = "Save Setlist",
+          Type = FileRequestEventArgs.RequestType.SaveFile
+        };
+        if (UiSettings.Mediator.RequestFile(fre))
+          filename = fre.SelectedPath;
+      }
+
+      if (String.IsNullOrEmpty(filename))
+        return;
+
+      var setlist = new Setlist();
+      setlist.Songs.AddRange(Items);
+      setlist.SaveToFile(filename);
     }
 
     

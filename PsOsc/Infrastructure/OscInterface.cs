@@ -8,6 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Hsp.PsOsc.Infrastructure;
 
 namespace Hsp.PsOsc
 {
@@ -40,6 +41,9 @@ namespace Hsp.PsOsc
     public List<MessageHandlerBase> Handlers { get; }
 
     private CancellationTokenSource Token { get; }
+
+
+    public event EventHandler<OscMessage> MessageReceived;
 
 
     public OscInterface()
@@ -81,16 +85,19 @@ namespace Hsp.PsOsc
       var messages = packet is OscBundle bundle ? bundle.Cast<OscMessage>().ToArray() : new[] { packet as OscMessage };
 
       foreach (var message in messages)
-      foreach (var handler in Handlers)
       {
-        var m = handler.Regex.Match(message.Address);
-        if (!m.Success) continue;
+        MessageReceived?.Invoke(this, message);
+        foreach (var handler in Handlers)
+        {
+          var m = handler.Regex.Match(message.Address);
+          if (!m.Success) continue;
 
-        var groupNames = handler.Regex.GetGroupNames();
-        var args = groupNames.ToDictionary(
-          name => name,
-          name => m.Groups[name].Value);
-        handler.Process(args, message.ToArray());
+          var groupNames = handler.Regex.GetGroupNames();
+          var args = groupNames.ToDictionary(
+            name => name,
+            name => m.Groups[name].Value);
+          handler.Process(args, message.ToArray());
+        }
       }
     }
 
@@ -99,7 +106,9 @@ namespace Hsp.PsOsc
       if (Sender == null)
         throw new InvalidOperationException("The OSC interface is not connected.");
 
-      Sender.Send(new OscMessage(address, arguments));
+      var message = new OscMessage(address, arguments);
+      Debug.WriteLine($"o: {message}");
+      Sender.Send(message);
     }
 
 
@@ -152,12 +161,24 @@ namespace Hsp.PsOsc
       Send("/pause");
     }
 
-    public void GotoRegion(RegionSlot region)
+    public void GotoRegion(RegionSlot region, bool withWait = false)
     {
       if (region?.Id == null) return;
       Send("/region", region.Id);
+      if (withWait)
+        WaitFor("/lastregion/number/str", $"{region.Id}");
     }
 
+    public void WaitFor(string address)
+    {
+      WaitFor(address, null);
+    }
+
+    public void WaitFor(string address, object arg)
+    {
+      using (var awaiter = new MessageAwaiter(address, arg))
+        awaiter.Wait();
+    }
 
     public void Dispose()
     {

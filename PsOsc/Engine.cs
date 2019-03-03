@@ -46,7 +46,10 @@ namespace Hsp.PsOsc
       get => GetAutoFieldValue<IRegion>();
       set
       {
-        SetAutoFieldValue(value);
+        var oldRegion = CurrentRegion;
+        if (SetAutoFieldValue(value))
+          if (oldRegion != null && Playing)
+            RegionFinished?.Invoke(this, oldRegion);
         BeginSongPlayback();
         CurrentRegionChanged?.Invoke(this, value);
       }
@@ -78,6 +81,8 @@ namespace Hsp.PsOsc
 
 
     public event EventHandler<IRegion> CurrentRegionChanged;
+    
+    public event EventHandler<IRegion> RegionFinished;
     
     public event EventHandler<float> TimeChanged;
 
@@ -136,7 +141,8 @@ namespace Hsp.PsOsc
     
     public void Play(RegionSlot region)
     {
-      Interface.GotoRegion(region);
+      Interface.Stop();
+      Interface.GotoRegion(region, true);
       Interface.Play();
     }
 

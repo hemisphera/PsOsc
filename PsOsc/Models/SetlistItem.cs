@@ -20,7 +20,12 @@ namespace Hsp.PsOsc
     public string Name
     {
       get => GetAutoFieldValue<string>();
-      set => SetAutoFieldValue(value);
+      set
+      {
+        SetAutoFieldValue(value);
+        if (String.IsNullOrEmpty(RegionName))
+          RegionName = Name;
+      }
     }
 
     public string RegionName
