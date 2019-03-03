@@ -8,6 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Hsp.PsOsc.Extensibility;
 using Hsp.PsOsc.Infrastructure;
 
 namespace Hsp.PsOsc
@@ -107,7 +108,7 @@ namespace Hsp.PsOsc
         throw new InvalidOperationException("The OSC interface is not connected.");
 
       var message = new OscMessage(address, arguments);
-      Debug.WriteLine($"o: {message}");
+      Engine.Instance.WriteLogEntry($"OUT: {message}");
       Sender.Send(message);
     }
 
@@ -161,12 +162,15 @@ namespace Hsp.PsOsc
       Send("/pause");
     }
 
-    public void GotoRegion(RegionSlot region, bool withWait = false)
+    public void GotoRegion(IRegion region, bool withWait = false)
     {
       if (region?.Id == null) return;
-      Send("/region", region.Id);
+      Send("/time", region.StartTime);
       if (withWait)
+      {
         WaitFor("/lastregion/number/str", $"{region.Id}");
+        Thread.Sleep(150);
+      }
     }
 
     public void WaitFor(string address)

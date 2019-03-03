@@ -87,6 +87,8 @@ namespace Hsp.PsOsc
     
     public StatusPart Status { get; }
 
+    public LogPart Log { get; }
+
 
     private MainVm()
     {
@@ -95,6 +97,7 @@ namespace Hsp.PsOsc
       Regions = new RegionsPart();
       Setlist = new SetlistPart();
       Status = new StatusPart();
+      Log = new LogPart();
 
       var args = Environment.GetCommandLineArgs();
       if (args.Length > 1)

@@ -32,6 +32,7 @@ namespace Hsp.PsOsc.Infrastructure
     {
       Handle.Reset();
       Engine.Instance.Interface.MessageReceived += InterfaceOnMessageReceived;
+      Engine.Instance.WriteLogEntry($"Waiting for {Address} '{Argument ?? ""}'");
       if (timeout == TimeSpan.MaxValue)
         Handle.WaitOne();
       else

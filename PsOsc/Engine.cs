@@ -86,6 +86,8 @@ namespace Hsp.PsOsc
     
     public event EventHandler<float> TimeChanged;
 
+    public event EventHandler<string> OnLogEntryReceived; 
+
 
     private Engine()
     {
@@ -139,10 +141,14 @@ namespace Hsp.PsOsc
     }
 
     
-    public void Play(RegionSlot region)
+    public void Play(IRegion region)
     {
       Interface.Stop();
-      Interface.GotoRegion(region, true);
+      
+      // a '/lastregion' is only emitted if we're not already on the target region
+      var wait = region != CurrentRegion; 
+        
+      Interface.GotoRegion(region, wait);
       Interface.Play();
     }
 
@@ -169,6 +175,11 @@ namespace Hsp.PsOsc
     public void SendOscMessage(string address, params object[] arguments)
     {
       Interface.Send(address, arguments);
+    }
+
+    public void WriteLogEntry(string message)
+    {
+      OnLogEntryReceived?.Invoke(this, message);
     }
 
 

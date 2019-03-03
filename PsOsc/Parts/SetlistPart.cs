@@ -104,7 +104,7 @@ namespace Hsp.PsOsc.Parts
     {
       Engine.Instance.RegionFinished += (s, e) =>
       {
-        Debug.WriteLine($"Region {e.Name} finished");
+        Engine.Instance.WriteLogEntry($"Region {e.Name} finished");
         PlayNext();
       };
     }
@@ -130,7 +130,7 @@ namespace Hsp.PsOsc.Parts
         if (Math.Abs(PlayingItem.PauseBefore) > 0.1)
           Thread.Sleep(TimeSpan.FromSeconds(PlayingItem.PauseBefore));
 
-        Debug.WriteLine($"Playing region {region.Name}");
+        Engine.Instance.WriteLogEntry($"Playing region {region.Name}");
         Engine.Instance.Play(region);
       });
     }
@@ -145,7 +145,7 @@ namespace Hsp.PsOsc.Parts
           Thread.Sleep(TimeSpan.FromSeconds(PlayingItem.PauseAfter));
 
         var nextItem = Items.FirstOrDefault(i => i.Sequence > PlayingItem.Sequence);
-        Debug.WriteLine("Next: " + nextItem.Name);
+        Engine.Instance.WriteLogEntry("Next: " + nextItem.Name);
         Play(nextItem);
       });
     }

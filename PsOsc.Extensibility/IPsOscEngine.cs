@@ -19,6 +19,8 @@ namespace Hsp.PsOsc.Extensibility
 
     void SendOscMessage(string address, params object[] arguments);
 
+    void WriteLogEntry(string message);
+
 
     event EventHandler<IRegion> CurrentRegionChanged;
 

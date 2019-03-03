@@ -8,6 +8,10 @@
 
     int? Id { get; }
 
+    float StartTime { get; }
+
+    float? Duration { get; }
+
   }
 
 }

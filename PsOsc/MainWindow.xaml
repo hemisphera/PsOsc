@@ -4,12 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hsp.PsOsc"
-        xmlns:converters="clr-namespace:eos.Mvvm.Converters;assembly=eos.Mvvm.Core"
-        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
         xmlns:controls="clr-namespace:Hsp.PsOsc.Controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="650" Width="950">
 
   <DockPanel>
 
@@ -17,9 +15,6 @@
       <StatusBarItem Content="{Binding Source={x:Static local:Engine.Instance}, Path=Interface.ReceiverState}" ContentStringFormat="RCV: {0}" />
       <StatusBarItem Content="{Binding Source={x:Static local:Engine.Instance}, Path=Interface.SenderState}" ContentStringFormat="SND: {0}" />
     </StatusBar>
-
-    <UniformGrid Columns="2" DockPanel.Dock="Top" Height="55" >
-    </UniformGrid>
 
     <UniformGrid DockPanel.Dock="Bottom" Columns="4" Height="55">
       <UniformGrid.Resources>
@@ -53,6 +48,10 @@
 
           <dxdo:LayoutPanel Caption="Tracks">
             <controls:TracksPartControl DataContext="{Binding Path=Tracks}" />
+          </dxdo:LayoutPanel>
+
+          <dxdo:LayoutPanel Caption="Log">
+            <controls:LogPartControl DataContext="{Binding Path=Log}" />
           </dxdo:LayoutPanel>
 
         </dxdo:TabbedGroup>

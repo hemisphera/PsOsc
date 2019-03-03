@@ -154,6 +154,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\LogPartControl.xaml.cs">
+      <DependentUpon>LogPartControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\RegionsPartControl.xaml.cs">
       <DependentUpon>RegionsPartControl.xaml</DependentUpon>
     </Compile>
@@ -176,10 +179,12 @@
     <Compile Include="Infrastructure\MessageAwaiter.cs" />
     <Compile Include="Infrastructure\OscInterface.cs" />
     <Compile Include="Events\PsSongEvent.cs" />
+    <Compile Include="Models\LogEntry.cs" />
     <Compile Include="Models\Setlist.cs" />
     <Compile Include="Models\SetlistItem.cs" />
     <Compile Include="Models\SlotBase.cs" />
     <Compile Include="Models\SongConfiguration.cs" />
+    <Compile Include="Parts\LogPart.cs" />
     <Compile Include="Parts\RegionsPart.cs" />
     <Compile Include="Parts\SetlistPart.cs" />
     <Compile Include="Parts\StatusPart.cs" />
@@ -187,6 +192,10 @@
     <Compile Include="TrackControl.xaml.cs">
       <DependentUpon>TrackControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\LogPartControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\RegionsPartControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
